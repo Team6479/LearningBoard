@@ -3,10 +3,8 @@ package org.usfirst.frc.team6479.robot;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot 
@@ -15,8 +13,8 @@ public class Robot extends IterativeRobot
 	String modeSelected;
 	
 	//motor controllers
-	Spark spark;
-	Victor victor;
+	Victor victor1;
+	Victor victor2;
 	
 	//sensors
 	RangeFinderAnalog sonar;
@@ -28,9 +26,9 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() {	
 		//init all motor controllers and sensors
-		spark = new Spark(0);
-		victor = new Victor(0);
-		sonar = new RangeFinderAnalog(0);
+		victor1 = new Victor(0);
+		victor2 = new Victor(0);
+		//sonar = new RangeFinderAnalog(0);
 		
 		//encoder
 		encoder = new Encoder(1, 2, false, Encoder.EncodingType.k4X);
@@ -51,8 +49,8 @@ public class Robot extends IterativeRobot
 	//method to show driver information
 	public void driverInfo()
 	{
-		SmartDashboard.putString("DB/String 1", String.format("Spark: %.3f", spark.get()));
-		SmartDashboard.putString("DB/String 2", String.format("Victor: %.3f", victor.get()));
+		SmartDashboard.putString("DB/String 1", String.format("Victor 1: %.3f", victor1.get()));
+		SmartDashboard.putString("DB/String 2", String.format("Victor 2: %.3f", victor2.get()));
 		SmartDashboard.putString("DB/String 3", String.format("Sonar: %.3f\"", sonar.getDistanceInInches()));
 		SmartDashboard.putString("DB/String 4", String.format("Encoder: %.3f\"", encoder.getDistance()));
 	}
@@ -75,8 +73,8 @@ public class Robot extends IterativeRobot
 		{
 		case "electronics":
 			//run victor at half speed backwards and spark at full speed
-			victor.set(-0.5);
-			victor.set(1.0);
+			victor1.set(-1);
+			victor2.set(1);
 		break;
 		case "pneumatics":
 			//do pneumatics stuff
