@@ -1,9 +1,9 @@
 package org.usfirst.frc.team6479.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,9 +16,15 @@ public class Robot extends IterativeRobot
 	Victor victor1;
 	Victor victor2;
 	
+	//Compressor
+	Compressor compressor;
+	
+	//Solenoid
+	Solenoid solenoid; 
+	
 	//sensors
 	RangeFinderAnalog sonar;
-	Encoder encoder;
+	//Encoder encoder;
 	
 	//counter for driver info, so code isnt called too much
 	private int driverCounter;
@@ -27,15 +33,24 @@ public class Robot extends IterativeRobot
 	public void robotInit() {	
 		//init all motor controllers and sensors
 		victor1 = new Victor(0);
-		victor2 = new Victor(0);
+		victor2 = new Victor(1);
+		
+		//init Compressor
+		compressor = new Compressor(0);
+		//Set compressor to off by default
+		compressor.setClosedLoopControl(false);
+		
+		//Solenoid
+		solenoid = new Solenoid(0);
+		
 		//sonar = new RangeFinderAnalog(0);
 		
 		//encoder
-		encoder = new Encoder(1, 2, false, Encoder.EncodingType.k4X);
+		//encoder = new Encoder(1, 2, false, Encoder.EncodingType.k4X);
 		// set the time until when the robot is considered stopped, set in seconds
-		encoder.setMaxPeriod(.05);
+		//encoder.setMaxPeriod(.05);
 		// set distance per pulse to be 1 inch
-		encoder.setDistancePerPulse((6 * Math.PI) / 360);
+		//encoder.setDistancePerPulse((6 * Math.PI) / 360);
 		
 		//setup driver console
 		SmartDashboard.putString("DB/String 0", "electronics");
@@ -52,7 +67,7 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putString("DB/String 1", String.format("Victor 1: %.3f", victor1.get()));
 		SmartDashboard.putString("DB/String 2", String.format("Victor 2: %.3f", victor2.get()));
 		SmartDashboard.putString("DB/String 3", String.format("Sonar: %.3f\"", sonar.getDistanceInInches()));
-		SmartDashboard.putString("DB/String 4", String.format("Encoder: %.3f\"", encoder.getDistance()));
+		//SmartDashboard.putString("DB/String 4", String.format("Encoder: %.3f\"", encoder.getDistance()));
 	}
 	@Override
 	public void teleopInit() {
@@ -60,7 +75,7 @@ public class Robot extends IterativeRobot
 		modeSelected = SmartDashboard.getString("DB/String 0", "electronics");
 
 		// reset the encoder
-		encoder.reset();
+		//encoder.reset();
 		
 		//update driver info
 		driverInfo();
@@ -78,6 +93,7 @@ public class Robot extends IterativeRobot
 		break;
 		case "pneumatics":
 			//do pneumatics stuff
+			solenoid.set(true);
 		break;
 		}
 		
