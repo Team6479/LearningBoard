@@ -86,6 +86,30 @@ public class Robot extends IterativeRobot
 		double leftY = xbox.getRawAxis(1);
 		double rightY = xbox.getRawAxis(5);
 		
+		if (xbox.getRawButton(5))
+		{
+			if (compressor.getClosedLoopControl())
+			{
+				compressor.setClosedLoopControl(false);
+			}
+			else
+			{
+				compressor.setClosedLoopControl(true);
+			}
+		}
+		
+		if (xbox.getRawButton(6))
+		{
+			if (solenoid.get())
+			{
+				solenoid.set(false);
+			}
+			else 
+			{
+				solenoid.set(true);
+			}
+		}
+		
 		victor1.set(leftY);
 		victor2.set(rightY);
 		
