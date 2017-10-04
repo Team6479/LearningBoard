@@ -80,6 +80,9 @@ public class Robot extends IterativeRobot
 		//update driver info
 		driverInfo();
 		driverCounter = 0;
+		
+		//Set Compressor to on
+		compressor.setClosedLoopControl(true);
 	}
 	@Override
 	public void teleopPeriodic() {
