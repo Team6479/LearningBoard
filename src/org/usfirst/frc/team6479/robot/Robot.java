@@ -1,20 +1,22 @@
 package org.usfirst.frc.team6479.robot;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot 
 {
-	//mode selected, either pneumatics or electronics
-	String modeSelected;
 	
 	//motor controllers
 	Victor victor1;
 	Victor victor2;
+	
+	
+	//xbox
+	XboxController xbox;
 	
 	//Compressor
 	Compressor compressor;
@@ -22,8 +24,6 @@ public class Robot extends IterativeRobot
 	//Solenoid
 	Solenoid solenoid; 
 	
-	//sensors
-	RangeFinderAnalog sonar;
 	//Encoder encoder;
 	
 	//counter for driver info, so code isnt called too much
@@ -40,6 +40,9 @@ public class Robot extends IterativeRobot
 		//Set compressor to off by default
 		compressor.setClosedLoopControl(false);
 		
+		//controller
+		xbox = new XboxController(0);
+		
 		//Solenoid
 		solenoid = new Solenoid(0);
 		
@@ -52,13 +55,9 @@ public class Robot extends IterativeRobot
 		// set distance per pulse to be 1 inch
 		//encoder.setDistancePerPulse((6 * Math.PI) / 360);
 		
-		//setup driver console
-		SmartDashboard.putString("DB/String 0", "electronics");
 		driverInfo();
 		driverCounter = 0;
 		
-		//camera
-		CameraServer.getInstance().startAutomaticCapture();
 		
 	}
 	//method to show driver information
@@ -66,13 +65,10 @@ public class Robot extends IterativeRobot
 	{
 		SmartDashboard.putString("DB/String 1", String.format("Victor 1: %.3f", victor1.get()));
 		SmartDashboard.putString("DB/String 2", String.format("Victor 2: %.3f", victor2.get()));
-		SmartDashboard.putString("DB/String 3", String.format("Sonar: %.3f\"", sonar.getDistanceInInches()));
 		//SmartDashboard.putString("DB/String 4", String.format("Encoder: %.3f\"", encoder.getDistance()));
 	}
 	@Override
 	public void teleopInit() {
-		// get the selected mode
-		modeSelected = SmartDashboard.getString("DB/String 0", "electronics");
 
 		// reset the encoder
 		//encoder.reset();
@@ -86,19 +82,15 @@ public class Robot extends IterativeRobot
 	}
 	@Override
 	public void teleopPeriodic() {
-		//based on mode, do stuff
-		switch(modeSelected)
-		{
-		case "electronics":
-			//run victor at half speed backwards and spark at full speed
-			victor1.set(-1);
-			victor2.set(1);
-		break;
-		case "pneumatics":
-			//do pneumatics stuff
-			solenoid.set(true);
-		break;
-		}
+		
+		double leftY = xbox.getRawAxis(1);
+		double rightY = xbox.getRawAxis(5);
+		
+		victor1.set(leftY);
+		victor2.set(rightY);
+		
+		//do pneumatics stuff
+		solenoid.set(true);
 		
 		//update driver info of appropriate in cycle
 		driverCounter++;
