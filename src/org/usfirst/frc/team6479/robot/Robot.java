@@ -1,8 +1,9 @@
 package org.usfirst.frc.team6479.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,10 +20,10 @@ public class Robot extends IterativeRobot
 	XboxController xbox;
 	
 	//Compressor
-	Compressor compressor;
+	//Compressor compressor;
 	
 	//Solenoid
-	Solenoid solenoid; 
+	DoubleSolenoid dubsolenoid; 
 	
 	//Encoder encoder;
 	
@@ -36,15 +37,15 @@ public class Robot extends IterativeRobot
 		victor2 = new Victor(1);
 		
 		//init Compressor
-		compressor = new Compressor(0);
+		//compressor = new Compressor(1);
 		//Set compressor to off by default
-		compressor.setClosedLoopControl(false);
+		//compressor.setClosedLoopControl(false);
 		
 		//controller
 		xbox = new XboxController(0);
 		
 		//Solenoid
-		solenoid = new Solenoid(0);
+		dubsolenoid = new DoubleSolenoid(4,5);
 		
 		//sonar = new RangeFinderAnalog(0);
 		
@@ -57,8 +58,6 @@ public class Robot extends IterativeRobot
 		
 		driverInfo();
 		driverCounter = 0;
-		
-		
 	}
 	//method to show driver information
 	public void driverInfo()
@@ -76,9 +75,6 @@ public class Robot extends IterativeRobot
 		//update driver info
 		driverInfo();
 		driverCounter = 0;
-		
-		//Set Compressor to on
-		compressor.setClosedLoopControl(true);
 	}
 	@Override
 	public void teleopPeriodic() {
@@ -86,35 +82,44 @@ public class Robot extends IterativeRobot
 		double leftY = xbox.getRawAxis(1);
 		double rightY = xbox.getRawAxis(5);
 		
-		if (xbox.getRawButton(5))
+		/*
+		if (xbox.getRawButton(3))
 		{
-			if (compressor.getClosedLoopControl())
-			{
-				compressor.setClosedLoopControl(false);
-			}
-			else
-			{
-				compressor.setClosedLoopControl(true);
-			}
+			compressor.setClosedLoopControl(true);
 		}
 		
-		if (xbox.getRawButton(6))
+		if (xbox.getRawButton(2))
 		{
-			if (solenoid.get())
-			{
-				solenoid.set(false);
-			}
-			else 
-			{
-				solenoid.set(true);
-			}
+			compressor.setClosedLoopControl(false);
+		}
+		*/
+		
+		//Set solenoid to on or off
+		if(xbox.getRawButton(4)) {
+			dubsolenoid.set(Value.kForward);
 		}
 		
-		victor1.set(leftY);
-		victor2.set(rightY);
+		if(xbox.getRawButton(1)) {
+			dubsolenoid.set(Value.kReverse);
+		}
 		
-		//do pneumatics stuff
-		solenoid.set(true);
+		if (leftY >= 0.008 || leftY <= -0.008)
+		{
+			victor1.set(leftY);
+		}
+		else
+		{
+			victor1.set(0);
+		}
+		
+		if (rightY >= 0.008 || rightY <= -0.008)
+		{
+			victor2.set(rightY);
+		}
+		else
+		{
+			victor2.set(0);
+		}
 		
 		//update driver info of appropriate in cycle
 		driverCounter++;
