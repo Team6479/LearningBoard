@@ -103,23 +103,9 @@ public class Robot extends IterativeRobot
 			dubsolenoid.set(Value.kReverse);
 		}
 		
-		if (leftY >= 0.008 || leftY <= -0.008)
-		{
-			victor1.set(leftY);
-		}
-		else
-		{
-			victor1.set(0);
-		}
-		
-		if (rightY >= 0.008 || rightY <= -0.008)
-		{
-			victor2.set(rightY);
-		}
-		else
-		{
-			victor2.set(0);
-		}
+		//set a threshold for motors
+		victor1.set(Math.abs(leftY) >= 0.008 ? rightY : 0);
+		victor2.set(Math.abs(rightY) >= 0.008 ? rightY : 0);
 		
 		//update driver info of appropriate in cycle
 		driverCounter++;
