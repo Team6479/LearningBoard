@@ -16,15 +16,23 @@ public class Robot extends IterativeRobot
 	Victor victor1;
 	Victor victor2;
 	
-	
+	//stuff -albert
+	int ggg;
+	int gg;
+	int g;
+	int x;
 	//xbox
 	XboxController xbox;
 	
+	//ps4(
+	XboxController ps4;
+	//)
 	//Compressor
 	Compressor compressor;
 	
 	//Solenoid
-	DoubleSolenoid dubsolenoid; 
+	DoubleSolenoid dubsolenoid1;
+	DoubleSolenoid dubsolenoid2;
 	
 	//Spike
 	Relay spike;
@@ -45,9 +53,12 @@ public class Robot extends IterativeRobot
 		
 		//controller
 		xbox = new XboxController(0);
-		
+		//ps4(
+		ps4 = new XboxController(1);
+		//)
 		//Solenoid
-		dubsolenoid = new DoubleSolenoid(4,5);
+		dubsolenoid1 = new DoubleSolenoid(4,5);
+		dubsolenoid2 = new DoubleSolenoid(6,7);
 		
 		//Spike
 		spike = new Relay(3);
@@ -84,8 +95,8 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic() {
 		
-		double leftY = xbox.getRawAxis(1);
-		double rightY = xbox.getRawAxis(5);
+		double leftY = ps4.getRawAxis(1);
+		double rightY = ps4.getRawAxis(5);
 		
 		if (xbox.getRawButton(3))
 		{
@@ -99,19 +110,33 @@ public class Robot extends IterativeRobot
 		
 		//Set solenoid to on or off
 		if(xbox.getRawButton(4)) {
-			dubsolenoid.set(Value.kForward);
+			g += 1;
+			if(g == 20) {
+			if(ggg == 1){
+			ggg = 0;
+			dubsolenoid1.set(Value.kForward);
+			}else {
+			ggg = 1;
+			dubsolenoid1.set(Value.kReverse);
+			}
+			g = 0;
+			}
+		}else {
+			g = 19;
 		}
-		
 		if(xbox.getRawButton(1)) {
-			dubsolenoid.set(Value.kReverse);
-		}
-		
-		if(xbox.getRawButton(7)) {
-			spike.set(Relay.Value.kOn);
-		}
-		
-		if (xbox.getRawButton(8)) {
-			spike.set(Relay.Value.kOff);
+			x += 1;
+			if(x == 20) {
+			if(gg == 1){
+			gg = 0;
+			dubsolenoid2.set(Value.kForward);
+			}else {
+			gg = 1;
+			dubsolenoid2.set(Value.kReverse);
+			}
+			x = 0;
+		}}else {
+			x = 19;
 		}
 		
 		//set a threshold for motors
