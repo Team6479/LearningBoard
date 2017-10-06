@@ -109,7 +109,8 @@ public class Robot extends IterativeRobot
 		if(xbox.getRawButton(7)) {
 			spike.set(Relay.Value.kOn);
 		}
-		else if (xbox.getRawButton(8)) {
+		
+		if (xbox.getRawButton(8)) {
 			spike.set(Relay.Value.kOff);
 		}
 		
