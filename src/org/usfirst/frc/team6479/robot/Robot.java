@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,10 +21,13 @@ public class Robot extends IterativeRobot
 	XboxController xbox;
 	
 	//Compressor
-	//Compressor compressor;
+	Compressor compressor;
 	
 	//Solenoid
 	DoubleSolenoid dubsolenoid; 
+	
+	//Spike
+	Relay spike;
 	
 	//Encoder encoder;
 	
@@ -37,15 +41,16 @@ public class Robot extends IterativeRobot
 		victor2 = new Victor(1);
 		
 		//init Compressor
-		//compressor = new Compressor(1);
-		//Set compressor to off by default
-		//compressor.setClosedLoopControl(false);
+		compressor = new Compressor(1);
 		
 		//controller
 		xbox = new XboxController(0);
 		
 		//Solenoid
 		dubsolenoid = new DoubleSolenoid(4,5);
+		
+		//Spike
+		spike = new Relay(3);
 		
 		//sonar = new RangeFinderAnalog(0);
 		
@@ -82,7 +87,6 @@ public class Robot extends IterativeRobot
 		double leftY = xbox.getRawAxis(1);
 		double rightY = xbox.getRawAxis(5);
 		
-		/*
 		if (xbox.getRawButton(3))
 		{
 			compressor.setClosedLoopControl(true);
@@ -92,7 +96,6 @@ public class Robot extends IterativeRobot
 		{
 			compressor.setClosedLoopControl(false);
 		}
-		*/
 		
 		//Set solenoid to on or off
 		if(xbox.getRawButton(4)) {
@@ -101,6 +104,13 @@ public class Robot extends IterativeRobot
 		
 		if(xbox.getRawButton(1)) {
 			dubsolenoid.set(Value.kReverse);
+		}
+		
+		if(xbox.getRawButton(7)) {
+			spike.set(Relay.Value.kOn);
+		}
+		else if (xbox.getRawButton(8)) {
+			spike.set(Relay.Value.kOff);
 		}
 		
 		//set a threshold for motors
