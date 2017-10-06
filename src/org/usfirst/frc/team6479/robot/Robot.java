@@ -115,7 +115,7 @@ public class Robot extends IterativeRobot
 		}
 		
 		//set a threshold for motors
-		victor1.set(Math.abs(leftY) >= 0.008 ? rightY : 0);
+		victor1.set(Math.abs(leftY) >= 0.008 ? leftY : 0);
 		victor2.set(Math.abs(rightY) >= 0.008 ? rightY : 0);
 		
 		//update driver info of appropriate in cycle
