@@ -31,6 +31,9 @@ public class Robot extends IterativeRobot
 	
 	//Encoder encoder;
 	
+	int g;
+	int ggg;
+	
 	//counter for driver info, so code isnt called too much
 	private int driverCounter;
 	
@@ -52,6 +55,9 @@ public class Robot extends IterativeRobot
 		
 		//Spike
 		spike = new Relay(3);
+		
+		g = 0;
+		ggg = 0;
 		
 		//sonar = new RangeFinderAnalog(0);
 		
@@ -99,9 +105,6 @@ public class Robot extends IterativeRobot
 		}
 		
 		//Set solenoid to on or off
-		int g = 0;
-		int gg = 0;
-		int ggg = 0;
 		if(xbox.getRawButton(4)) {
 			g += 1;
 			if(g == 20) {
@@ -117,7 +120,7 @@ public class Robot extends IterativeRobot
 			}
 		}
 		else {
-			g = 19;
+			g = 0;
 		}
 		
 		//set a threshold for motors
