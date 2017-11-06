@@ -51,7 +51,7 @@ public class Robot extends IterativeRobot
 
 		//Solenoid
 		dubsolenoid1 = new DoubleSolenoid(4,5);
-		dubsolenoid2 = new DoubleSolenoid(6,7);
+		//dubsolenoid2 = new DoubleSolenoid(6,7);
 		
 		//Spike
 		spike = new Relay(3);
